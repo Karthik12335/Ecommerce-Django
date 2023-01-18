@@ -5,3 +5,5 @@
 >>> print(get_random_secret_key())
 
 pip install python-dotenv
+
+python manage.py spectacular --file schema.yml

@@ -1,29 +1,47 @@
 from rest_framework import serializers
-from .models import Brand,Category,Product,ProductLine
+
+from .models import Brand, Category, Product, ProductImage, ProductLine
+
 
 class CategorySerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source="name")
+
     class Meta:
         model = Category
-        fields = ['category_name']
+        fields = ["category_name"]
 
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['name']
+        fields = ["name"]
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        exclude = ("id", "productline")
+
 
 class ProductLineSerializer(serializers.ModelSerializer):
+    product_image = ProductImageSerializer(many=True)
 
     class Meta:
         model = ProductLine
-        exclude = ("id","product","is_active")
+        fields = ["price", "sku", "stock_qty", "order", "product_image"]
+
 
 class ProductSerializer(serializers.ModelSerializer):
     brand_name = serializers.CharField(source="brand.name")
     category_name = serializers.CharField(source="category.name")
     product_line = ProductLineSerializer(many=True)
+
     class Meta:
         model = Product
-        fields = ["name","description","brand_name","category_name","product_line",]    
-
+        fields = [
+            "name",
+            "description",
+            "brand_name",
+            "category_name",
+            "product_line",
+        ]

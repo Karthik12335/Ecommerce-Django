@@ -50,17 +50,18 @@ class ProductView(viewsets.ViewSet):
         serializer = ProductSerializer(
             self.queryset.filter(slug=slug)
             .select_related("category", "brand")
-            .prefetch_related("product_line__product_image"),
+            .prefetch_related("product_line__product_image")
+            .prefetch_related("product_line__attribute_value__attribute"),
             many=True,
         )
-        data = Response(serializer.data)
-        q = list(connection.queries)
-        print(len(q))
-        for qs in q:
-            sqlfromatted = format(str(qs["sql"]), reindent=True)
-            print(highlight(sqlfromatted, SqlLexer(), TerminalFormatter()))
-        return data
-        # return Response(serializer.data)
+        # data = Response(serializer.data)
+        # q = list(connection.queries)
+        # print(len(q))
+        # for qs in q:
+        #     sqlfromatted = format(str(qs["sql"]), reindent=True)
+        #     print(highlight(sqlfromatted, SqlLexer(), TerminalFormatter()))
+        # return data
+        return Response(serializer.data)
 
     @extend_schema(responses=ProductSerializer)
     def list(self, request):

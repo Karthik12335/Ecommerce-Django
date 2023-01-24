@@ -8,8 +8,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from sqlparse import format
 
-from .models import Brand, Category, Product
-from .serializers import BrandSerializer, CategorySerializer, ProductSerializer
+from product.models import Brand, Category, Product
+from product.serializers import BrandSerializer, CategorySerializer, ProductSerializer
 
 
 class CategoryView(viewsets.ViewSet):
